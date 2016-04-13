@@ -17,25 +17,29 @@
 				]
 				$scope.addUser = function(){
 					$scope.users.push($scope.newUser);
-					console.log($scope.newUser);
-					$scope.newUser = '';
+					$scope.newUser = {};
+				}
+				$scope.deleteUser = function(user){
+					console.log(user)
+					$scope.users.splice($scope.users.indexOf(user), 1);
+					$scope.filter_here = '';
 				}
 			})
 		</script>
 	</head>
 	<body>
-		<div ng-controller='foodsController'>
+		<div ng-controller='usersController'>
 			Favorite User:
 			First Name <input type="text" ng-model="newUser.first_name">
 			Last Name <input type="text" ng-model="newUser.last_name">
 			Fave Language <input type="text" ng-model="newUser.fav_lang">
 			<input type="submit" value="Create User" ng-click='addUser()'>
-			search users:<input type="text"  ng-model="filter">
+			search users:<input type="text"  ng-model="filter_here">
 			<!-- <div class="things" name="">
 				<p ng-repeat='food in foods | filter:filter'>{{ food }}</p>
 			</div><br> -->
 			<table border="1px solid green">
-				<thead>
+				<thead ng-controller='usersController'>
 					<tr>
 						<td>First Name</td>
 						<td>Last Name</td>
@@ -43,12 +47,12 @@
 						<td>Actions</td>
 				</tr>
 				</thead>
-				<tbody>
-					<tr ng-repeat='user in users | orderBy: "last_name"'>
+				<tbody ng-repeat='user in users | filter:filter_here '>
+					<tr>
 						<td> {{ user.first_name }} </td>
 						<td> {{ user.last_name }} </td>
 						<td> {{ user.fav_lang }} </td>
-						<td> <a href="#/{{user.id}}">delete user</a> </td>
+						<td> <a ng-click='deleteUser(user)' href="#/#">delete {{user.first_name}}</a> </td>
 					</tr>
 				</tbody>
 			</table>
